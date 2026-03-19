@@ -1,50 +1,74 @@
-# Python code to reverse a linked list
-# YouTube video link: https://youtu.be/abjmGBs4eF0
-
-class Node:
-    def __init__(self, data):
-        self.data = data
+# 1: Reverse
+# Definition for singly-linked list
+class ListNode:
+    def __init__(self, x):
+        self.val = x
         self.next = None
 
-class LinkedList:
-    def __init__(self):
-        self.head = None
+#main code 
+def reverseList(head):
 
-    def append(self, data):
-        new_node = Node(data)
-        if not self.head:
-            self.head = new_node
-            return
-        last = self.head
-        while last.next:
-            last = last.next
-        last.next = new_node
+    temp = head
+    prev = None
 
-    def reverse(self):
-        prev = None
-        current = self.head
-        while current:
-            next_node = current.next
-            current.next = prev
-            prev = current
-            current = next_node
-        self.head = prev
+    while temp:
 
-    def print_list(self):
-        current = self.head
-        while current:
-            print(current.data, end=' -> ')
-            current = current.next
-        print('None')
+        next_node = temp.next   # store next node
+        temp.next = prev        # reverse pointer
 
-# Example usage:
-if __name__ == '__main__':
-    ll = LinkedList()
-    ll.append(1)
-    ll.append(2)
-    ll.append(3)
-    print('Original Linked List:')
-    ll.print_list()
-    ll.reverse()
-    print('Reversed Linked List:')
-    ll.print_list()
+        prev = temp             # move prev forward
+        temp = next_node        # move temp forward
+
+    return prev
+
+
+#2: Reverse first K nodes
+
+def reverseFirstK(head, k):
+
+    temp = head
+    prev = None
+    count = 0            # to track how many nodes reversed
+
+    if head is None or k <= 1:
+        return head
+
+    while temp and count < k:   # stop after k nodes
+
+        next_node = temp.next
+        temp.next = prev
+
+        prev = temp
+        temp = next_node
+
+        count += 1      # increase counter
+
+    head.next = temp    #connect reversed part to remaining list
+
+    return prev
+
+
+#3: Reverse K Group
+
+def reverseKGroup(self, head, k):
+
+    if head is None or k <= 1:
+        return head
+
+    temp = head
+    prev = None
+    count = 0
+
+    while temp and count < k:
+
+        next_node = temp.next
+        temp.next = prev
+
+        prev = temp
+        temp = next_node
+
+        count += 1
+
+    head.next = self.reverseKGroup(temp, k)
+
+    return prev
